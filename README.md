@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Interaktive Deutschlandkarte</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    #map {
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  // Karte initialisieren
+  const map = L.map('map').setView([51.1657, 10.4515], 6);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '©️ OpenStreetMap'
+  }).addTo(map);
+
+  // Texte für Bundesländer (beliebig ändern)
+  const bundeslandInfos = {
+    "Baden-Württemberg": "Informationen zu Baden-Württemberg.",
+    "Bayern": "Informationen zu Bayern.",
+    "Berlin": "Informationen zu Berlin.",
+    "Brandenburg": "Informationen zu Brandenburg.",
+    "Bremen": "Informationen zu Bremen.",
+    "Hamburg": "Informationen zu Hamburg.",
+    "Hessen": "Informationen zu Hessen.",
+    "Mecklenburg-Vorpommern": "Informationen zu Mecklenburg-Vorpommern.",
+    "Niedersachsen": "Informationen zu Niedersachsen.",
+    "Nordrhein-Westfalen": "Informationen zu Nordrhein-Westfalen.",
+    "Rheinland-Pfalz": "Informationen zu Rheinland-Pfalz.",
+    "Saarland": "Informationen zu Saarland.",
+    "Sachsen": "Informationen zu Sachsen.",
+    "Sachsen-Anhalt": "Informationen zu Sachsen-Anhalt.",
+    "Schleswig-Holstein": "Informationen zu Schleswig-Holstein.",
+    "Thüringen": "Informationen zu Thüringen."
+  };
+
+  // Farben pro Bundesland
+  const bundeslandFarben = {
+    "Baden-Württemberg": "#66c2a5",
+    "Bayern": "#fc8d62",
+    "Berlin": "#8da0cb",
+    "Brandenburg": "#e78ac3",
+    "Bremen": "#a6d854",
+    "Hamburg": "#ffd92f",
+    "Hessen": "#e5c494",
+    "Mecklenburg-Vorpommern": "#b3b3b3",
+    "Niedersachsen": "#1b9e77",
+    "Nordrhein-Westfalen": "#d95f02",
+    "Rheinland-Pfalz": "#7570b3",
+    "Saarland": "#e7298a",
+    "Sachsen": "#66a61e",
+    "Sachsen-Anhalt": "#e6ab02",
+    "Schleswig-Holstein": "#a6761d",
+    "Thüringen": "#666666"
+  };
+
+  // Standard-Style
+  function style(feature) {
+    const name = feature.properties.NAME_1;
+    return {
+      fillColor: bundeslandFarben[name] || "#cccccc",
+      weight: 1,
+      opacity: 1,
+      color: "#333",
+      fillOpacity: 0.6
+    };
+  }
+
+  // Interaktionen
+  function onEachFeature(feature, layer) {
+    const name = feature.properties.NAME_1;
+    const info = bundeslandInfos[name] || "Keine Informationen vorhanden.";
+
+    layer.on({
+      mouseover: function () {
+        layer.setStyle({
+          fillOpacity: 0.85,
+          weight: 2
+        });
+      },
+      mouseout: function () {
+        geojson.resetStyle(layer);
+      },
+      click: function () {
+        layer.bindPopup(
+          "<strong>" + name + "</strong><br><br>" + info
+        ).openPopup();
+      }
+    });
+  }
+
+  // GeoJSON laden
+  let geojson;
+  fetch("https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/2_hoch.geo.json")
+    .then(res => res.json())
+    .then(data => {
+      geojson = L.geoJSON(data, {
+        style: style,
+        onEachFeature: onEachFeature
+      }).addTo(map);
+    });
+</script>
+
+</body>
+</html>
