@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Interaktive Deutschlandkarte</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f7f7f7;
+    }
+    svg path {
+        cursor: pointer;
+        stroke: #333;
+        stroke-width: 1;
+        transition: fill 0.2s;
+    }
+    svg path:hover {
+        fill: #ffcc00;
+    }
+    #infoBox {
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 10px;
+        display: inline-block;
+        min-width: 200px;
+        background: #ffffff;
+        border: 2px solid #333;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Interaktive Deutschlandkarte</h1>
+
+<!-- Echte Deutschlandkarte als SVG -->
+<div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 750" width="60%">
+
+    <!-- Baden-Württemberg -->
+    <path id="Baden-Württemberg" fill="#8dd3c7"
+        d="M269 618l-20-38-30-22-5-42 39-40 50 18 29 46-10 56-53 22z"/>
+
+    <!-- Bayern -->
+    <path id="Bayern" fill="#ffffb3"
+        d="M333 540l31-52 66-22 44 41 3 63-50 73-81-10-13-36z"/>
+
+    <!-- Hessen -->
+    <path id="Hessen" fill="#bebada"
+        d="M265 516l-32-52 11-55 55-11 35 32-12 60-39 40z"/>
+
+    <!-- NRW -->
+    <path id="Nordrhein-Westfalen" fill="#fb8072"
+        d="M200 450l-60-50-15-67 40-30 50 15 40 70-11 55z"/>
+
+    <!-- Rheinland-Pfalz -->
+    <path id="Rheinland-Pfalz" fill="#80b1d3"
+        d="M215 470l-15-20-20-80 45-25 30 40-10 55z"/>
+
+    <!-- Saarland -->
+    <path id="Saarland" fill="#fdb462"
+        d="M185 505l-25-25 15-30 25 10 5 25z"/>
+
+    <!-- Niedersachsen -->
+    <path id="Niedersachsen" fill="#b3de69"
+        d="M260 330l-70-35-10-70 40-45 80 20 10 90-40 40z"/>
+
+    <!-- Bremen -->
+    <path id="Bremen" fill="#fccde5"
+        d="M235 310l-10-15 15-10z"/>
+
+    <!-- Hamburg -->
+    <path id="Hamburg" fill="#d9d9d9"
+        d="M275 285l-10-10 15-10z"/>
+
+    <!-- Schleswig-Holstein -->
+    <path id="Schleswig-Holstein" fill="#bc80bd"
+        d="M260 260l-40-40 20-40 55 10 25 30-20 30z"/>
+
+    <!-- Mecklenburg-Vorpommern -->
+    <path id="Mecklenburg-Vorpommern" fill="#ccebc5"
+        d="M330 260l45-30 60 10-10 45-50 10z"/>
+
+    <!-- Brandenburg -->
+    <path id="Brandenburg" fill="#ffed6f"
+        d="M370 330l70-20 20 50-40 40-50-20z"/>
+
+    <!-- Berlin -->
+    <path id="Berlin" fill="#bc80bd"
+        d="M415 330l-10-7 15-5z"/>
+
+    <!-- Sachsen-Anhalt -->
+    <path id="Sachsen-Anhalt" fill="#8dd3c7"
+        d="M330 385l-15-70 55-20 70 20-40 60z"/>
+
+    <!-- Sachsen -->
+    <path id="Sachsen" fill="#ffffb3"
+        d="M380 410l50-10 40 40-20 45-60-15z"/>
+
+    <!-- Thüringen -->
+    <path id="Thüringen" fill="#bebada"
+        d="M315 455l65-45 60 15-20 45-60 30z"/>
+
+</svg>
+</div>
+
+<!-- Ausgabe -->
+<div id="infoBox">Bitte ein Bundesland anklicken</div>
+
+<script>
+    const paths = document.querySelectorAll("svg path");
+    const infoBox = document.getElementById("infoBox");
+
+    paths.forEach(path => {
+        path.addEventListener("click", () => {
+            infoBox.textContent = path.id;
+        });
+    });
+</script>
+
+</body>
+</html>
