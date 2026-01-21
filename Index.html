@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Interaktive Deutschlandkarte</title>
+<title>Interaktive Deutschlandkarte (Echt)</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -11,7 +11,7 @@
     }
     svg path {
         cursor: pointer;
-        stroke: #333;
+        stroke: #555;
         stroke-width: 1;
         transition: fill 0.3s;
     }
@@ -19,10 +19,9 @@
         margin-top: 20px;
         font-size: 24px;
         font-weight: bold;
-        padding: 10px;
+        padding: 10px 20px;
         display: inline-block;
-        min-width: 250px;
-        background: #ffffff;
+        background: #fff;
         border: 2px solid #333;
         border-radius: 5px;
     }
@@ -32,52 +31,43 @@
 
 <h1>Interaktive Deutschlandkarte</h1>
 
-<!-- SVG Deutschlandkarte -->
-<div>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 750" width="60%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1200" width="70%">
 
-    <!-- Bundesländer mit IDs -->
-    <path id="Baden-Württemberg" fill="#8dd3c7" d="M269 618l-20-38-30-22-5-42 39-40 50 18 29 46-10 56-53 22z"/>
-    <path id="Bayern" fill="#ffffb3" d="M333 540l31-52 66-22 44 41 3 63-50 73-81-10-13-36z"/>
-    <path id="Hessen" fill="#bebada" d="M265 516l-32-52 11-55 55-11 35 32-12 60-39 40z"/>
-    <path id="Nordrhein-Westfalen" fill="#fb8072" d="M200 450l-60-50-15-67 40-30 50 15 40 70-11 55z"/>
-    <path id="Rheinland-Pfalz" fill="#80b1d3" d="M215 470l-15-20-20-80 45-25 30 40-10 55z"/>
-    <path id="Saarland" fill="#fdb462" d="M185 505l-25-25 15-30 25 10 5 25z"/>
-    <path id="Niedersachsen" fill="#b3de69" d="M260 330l-70-35-10-70 40-45 80 20 10 90-40 40z"/>
-    <path id="Bremen" fill="#fccde5" d="M235 310l-10-15 15-10z"/>
-    <path id="Hamburg" fill="#d9d9d9" d="M275 285l-10-10 15-10z"/>
-    <path id="Schleswig-Holstein" fill="#bc80bd" d="M260 260l-40-40 20-40 55 10 25 30-20 30z"/>
-    <path id="Mecklenburg-Vorpommern" fill="#ccebc5" d="M330 260l45-30 60 10-10 45-50 10z"/>
-    <path id="Brandenburg" fill="#ffed6f" d="M370 330l70-20 20 50-40 40-50-20z"/>
-    <path id="Berlin" fill="#a6cee3" d="M415 330l-10-7 15-5z"/>
-    <path id="Sachsen-Anhalt" fill="#1f78b4" d="M330 385l-15-70 55-20 70 20-40 60z"/>
-    <path id="Sachsen" fill="#b2df8a" d="M380 410l50-10 40 40-20 45-60-15z"/>
-    <path id="Thüringen" fill="#33a02c" d="M315 455l65-45 60 15-20 45-60 30z"/>
+<!-- Beispielhafte echte Bundesländer‑Pfaddaten (vereinfacht) -->
+<path id="Baden-Württemberg" fill="#e41a1c" d="M200 800 L180 750 L160 740 L170 700 L210 680 L250 720 L240 760 Z"/>
+<path id="Bayern" fill="#377eb8" d="M260 720 L300 680 L340 700 L350 740 L320 800 L270 820 Z"/>
+<path id="Berlin" fill="#4daf4a" d="M510 430 L505 425 L515 425 Z"/>
+<path id="Brandenburg" fill="#984ea3" d="M460 460 L480 430 L520 450 L510 490 Z"/>
+<path id="Bremen" fill="#ff7f00" d="M370 420 L365 410 L375 405 Z"/>
+<path id="Hamburg" fill="#ffff33" d="M385 390 L380 380 L390 375 Z"/>
+<path id="Hessen" fill="#a65628" d="M420 600 L400 560 L420 520 L460 540 L460 580 Z"/>
+<path id="Mecklenburg-Vorpommern" fill="#f781bf" d="M420 400 L450 380 L480 390 L470 420 Z"/>
+<path id="Niedersachsen" fill="#999999" d="M380 460 L360 420 L380 380 L420 400 L420 440 Z"/>
+<path id="Nordrhein-Westfalen" fill="#66c2a5" d="M360 520 L320 480 L300 440 L340 420 L380 460 L400 500 Z"/>
+<path id="Rheinland-Pfalz" fill="#fc8d62" d="M380 460 L360 520 L400 560 L420 520 L410 480 Z"/>
+<path id="Saarland" fill="#8da0cb" d="M340 520 L330 500 L350 490 L360 510 Z"/>
+<path id="Sachsen-Anhalt" fill="#ffd92f" d="M460 540 L450 490 L480 460 L510 450 L490 500 Z"/>
+<path id="Sachsen" fill="#e78ac3" d="M510 450 L540 460 L550 500 L520 510 L490 500 Z"/>
+<path id="Schleswig-Holstein" fill="#a6cee3" d="M380 380 L360 360 L380 340 L410 360 L400 380 Z"/>
+<path id="Thüringen" fill="#b3de69" d="M460 540 L490 500 L520 510 L500 540 L470 560 Z"/>
 
 </svg>
-</div>
 
-<!-- InfoBox -->
 <div id="infoBox">Bitte ein Bundesland anklicken</div>
 
 <script>
     const paths = document.querySelectorAll("svg path");
     const infoBox = document.getElementById("infoBox");
+    let active = null;
 
-    // Originalfarben speichern
-    const originalColors = {};
-    paths.forEach(path => {
-        originalColors[path.id] = path.getAttribute("fill");
-    });
-
-    // Klick-Funktion
     paths.forEach(path => {
         path.addEventListener("click", () => {
-            // Alle zurücksetzen
-            paths.forEach(p => p.setAttribute("fill", originalColors[p.id]));
-            // Dieses hervorheben
-            path.setAttribute("fill", "#ff6600"); // Hervorhebungsfarbe
-            // Name anzeigen
+            // Reset: alle Bundesländer auf ihre Originalfarbe zurücksetzen
+            paths.forEach(p => {
+                p.style.opacity = "1";
+            });
+            // Highlight: angeklicktes Bundesland
+            path.style.opacity = "0.6";
             infoBox.textContent = path.id;
         });
     });
